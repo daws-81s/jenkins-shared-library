@@ -48,7 +48,7 @@ def call(Map configMap){
                 }
             }
 
-            stage('SQuality Gate') {
+            stage('Quality Gate') {
                 steps {
                     timeout(time: 5, unit: 'MINUTES') {
                         waitForQualityGate abortPipeline: true
@@ -58,7 +58,7 @@ def call(Map configMap){
             stage('Docker build') {
                 
                 steps {
-                    withAWS(region: 'us-east-1', credentials: 'aws-creds') {
+                    withAWS(region: 'us-east-1', credentials: "aws-creds-${environment}") {
                         sh """
                         aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.us-east-1.amazonaws.com
 
